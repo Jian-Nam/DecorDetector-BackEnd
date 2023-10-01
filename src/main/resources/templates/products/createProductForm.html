@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://thymeleaf.org">
+
+<body>
+<div class = "container">
+    <form action="/products/new" method="post">
+        <div class="form-group">
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" placeholder="이름을 입력하세요">
+            <label for="image">이미지 링크</label>
+            <input type="text" id="image" name="image" placeholder="이름을 입력하세요">
+            <label for="link">상품 링크</label>
+            <input type="text" id="link" name="link" placeholder="이름을 입력하세요">
+        </div>
+        <button type="submit">등록</button>
+    </form>
+</div>
+</body>
+</html>

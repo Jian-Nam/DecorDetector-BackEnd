@@ -7,12 +7,20 @@
         <table>
             <thead>
             <tr>
-                <th>product List</th>
+                <th>id</th>
+                <th>name</th>
+                <th>image</th>
+                <th>link</th>
+                <th>vector</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="product : ${products}">
-                <td th:text="${product}"></td>
+                <td th:text="${product.id}"></td>
+                <td th:text="${product.name}"></td>
+                <td th:text="${product.image}"></td>
+                <td th:text="${product.link}"></td>
+                <td th:text="${product.vector}"></td>
             </tr>
             </tbody>
         </table>
