@@ -1,14 +1,12 @@
-package hongik.graduationproject.decordetectorbackend.service;
+package hongik.graduationproject.decordetectorbackend.client;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 
-@Service
-public class ProductDataRestTemplateService {
+public class IkeaClient {
 
     public String getProductData(String category, String start, String end){
         URI uri = UriComponentsBuilder

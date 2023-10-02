@@ -1,10 +1,24 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://thymeleaf.org">
-
+<head>
+    <style>
+        table{
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        th, td{
+            border: 1px solid black;
+            padding: 5px 10px
+        }
+        th{
+            background-color:  #96D4D4;
+        }
+    </style>
+</head>
 <body>
 <div class = "container">
     <div>
-        <table>
+        <table >
             <thead>
             <tr>
                 <th>id</th>
@@ -12,15 +26,22 @@
                 <th>image</th>
                 <th>link</th>
                 <th>vector</th>
+                <th>delete</th>
             </tr>
             </thead>
             <tbody>
             <tr th:each="product : ${products}">
-                <td th:text="${product.id}"></td>
-                <td th:text="${product.name}"></td>
-                <td th:text="${product.image}"></td>
-                <td th:text="${product.link}"></td>
-                <td th:text="${product.vector}"></td>
+                <form class th:action="@{/products/one(id=${product.id})}" method="post">
+                    <input type="hidden" name="_method" value="DELETE"/>
+                    <td name="id" th:text="${product.id}"></td>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.image}"></td>
+                    <td th:text="${product.link}"></td>
+                    <td th:text="${product.vector}"></td>
+                    <td>
+                        <button type="submit">삭제</button>
+                    </td>
+                </form>
             </tr>
             </tbody>
         </table>

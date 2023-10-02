@@ -1,6 +1,8 @@
 package hongik.graduationproject.decordetectorbackend.service;
 
 
+import hongik.graduationproject.decordetectorbackend.client.AiApiClient;
+import hongik.graduationproject.decordetectorbackend.client.IkeaClient;
 import hongik.graduationproject.decordetectorbackend.domain.Product;
 import hongik.graduationproject.decordetectorbackend.repository.ProductRepository;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
@@ -14,25 +16,20 @@ import java.util.Optional;
 @Transactional
 public class ProductService {
     private final ProductRepository productRepository;
+    private final IkeaClient ikeaClient;
+    private final AiApiClient aiApiClient;
 
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, IkeaClient ikeaClient, AiApiClient aiApiClient) {
+
         this.productRepository = productRepository;
+        this.ikeaClient = ikeaClient;
+        this.aiApiClient = aiApiClient;
     }
-
 
     public Long addProduct(Product product){
-        product.setVector( convertToVector(product.getLink()));
+        product.setVector( aiApiClient.convertToVector(product.getLink()));
         productRepository.save(product);
         return product.getId();
-    }
-
-    private List<Float> convertToVector(String imagelink){
-        List<Float> vector1 = new ArrayList<Float>();
-        vector1.add(3.14F);
-        vector1.add(8.05F);
-        vector1.add(5.29F);
-        vector1.add(3.28F);
-        return vector1;
     }
 
     public List<Product> findAllProducts(){
@@ -41,5 +38,9 @@ public class ProductService {
 
     public Optional<Product> findProduct(Long productId){
         return productRepository.findById(productId);
+    }
+
+    public void delete(Long id){
+        productRepository.deleteById(id);
     }
 }
