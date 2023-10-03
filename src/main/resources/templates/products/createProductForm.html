@@ -5,12 +5,14 @@
 <div class = "container">
     <form action="/products/new" method="post">
         <div class="form-group">
+            <label for="externalId">외부 ID</label>
+            <input type="number" id="externalId" name="externalId" placeholder="외부 ID를 입력하세요">
             <label for="name">이름</label>
             <input type="text" id="name" name="name" placeholder="이름을 입력하세요">
             <label for="image">이미지 링크</label>
-            <input type="text" id="image" name="image" placeholder="이름을 입력하세요">
+            <input type="text" id="image" name="image" placeholder="이미지 링크를 입력하세요">
             <label for="link">상품 링크</label>
-            <input type="text" id="link" name="link" placeholder="이름을 입력하세요">
+            <input type="text" id="link" name="link" placeholder="상품 링크를 입력하세요">
         </div>
         <button type="submit">등록</button>
     </form>

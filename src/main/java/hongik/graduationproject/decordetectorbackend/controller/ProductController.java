@@ -27,6 +27,7 @@ public class ProductController {
     @PostMapping("/products/new")
     public String createProduct(ProductForm productForm){
         Product product = new Product();
+        product.setExternalId(productForm.getExternalId());
         product.setName(productForm.getName());
         product.setImage(productForm.getImage());
         product.setLink(productForm.getLink());

@@ -21,10 +21,11 @@ public class SpringDataJpaRepositoryTest {
     ProductRepository repository;
 
     @Test
-    void saveProductTest(){
+    void saveProductAndFindByNameTest(){
         //given
         Product product = new Product();
         product.setName("123");
+        product.setExternalId(Long.valueOf(112233));
         product.setImage("http/blabla/desk.jpg");
         product.setLink("http/blabla/desk");
 
@@ -38,9 +39,31 @@ public class SpringDataJpaRepositoryTest {
         //when
         repository.save(product);
         Product result = repository.findByName(product.getName()).get();
-        System.out.println("Vector: " + result.getVector());
         //then
         assertThat(result).isEqualTo(product);
     }
+    @Test
+    void saveProductAndFindByExternalIdTest(){
+        //given
+        Product product = new Product();
+        product.setName("123");
+        product.setExternalId(Long.valueOf(112233));
+        product.setImage("http/blabla/desk.jpg");
+        product.setLink("http/blabla/desk");
 
+        List<Float> vector1 = new ArrayList<Float>();
+        vector1.add(3.14F);
+        vector1.add(8.05F);
+        vector1.add(5.29F);
+        vector1.add(3.28F);
+        product.setVector( vector1 );
+
+        //when
+        repository.save(product);
+        Product result = repository.findByExternalId(product.getExternalId()).get();
+        //then
+        assertThat(result).isEqualTo(product);
+    }
 }
+
+

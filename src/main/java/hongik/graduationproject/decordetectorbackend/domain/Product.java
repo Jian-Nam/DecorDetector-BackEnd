@@ -11,6 +11,8 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "external_id")
+    private Long externalId;
     @Column
     private String name;
     @Column
@@ -33,6 +35,10 @@ public class Product {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public Long getExternalId() { return externalId; }
+
+    public void setExternalId(Long externalId) { this.externalId = externalId; }
 
     public String getName() {
         return name;

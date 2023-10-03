@@ -22,6 +22,7 @@
             <thead>
             <tr>
                 <th>id</th>
+                <th>external id</th>
                 <th>name</th>
                 <th>image</th>
                 <th>link</th>
@@ -33,7 +34,8 @@
             <tr th:each="product : ${products}">
                 <form class th:action="@{/products/one(id=${product.id})}" method="post">
                     <input type="hidden" name="_method" value="DELETE"/>
-                    <td name="id" th:text="${product.id}"></td>
+                    <td th:text="${product.id}"></td>
+                    <td th:text="${product.externalId}"></td>
                     <td th:text="${product.name}"></td>
                     <td th:text="${product.image}"></td>
                     <td th:text="${product.link}"></td>

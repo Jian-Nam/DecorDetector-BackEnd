@@ -43,4 +43,23 @@ public class ProductService {
     public void delete(Long id){
         productRepository.deleteById(id);
     }
+
+    public List<Long> updateAllProducts(String category, String start, String end){
+        List<Product> productList = ikeaClient.getProductData(category, start, end);
+        List<Long> updatedList = updateByList(productList);
+        return updatedList;
+    }
+    public List<Long> updateByList(List<Product> productList){
+        List<Long> updatedList = new ArrayList<>();
+
+        for(Product product: productList){
+            Long externalId = product.getExternalId();
+
+            if(productRepository.findByExternalId(externalId).isEmpty()){
+                addProduct(product);
+                updatedList.add(externalId);
+            }
+        }
+        return updatedList;
+    }
 }
