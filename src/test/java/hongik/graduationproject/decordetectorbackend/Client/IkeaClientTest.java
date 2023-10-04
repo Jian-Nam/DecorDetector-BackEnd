@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @SpringBootTest
-@Transactional
 public class IkeaClientTest {
     @Autowired
     IkeaClient ikeaClient;

@@ -27,8 +27,13 @@ public class ProductService {
     }
 
     public Long addProduct(Product product){
-        product.setVector( aiApiClient.convertToVector(product.getLink()));
-        productRepository.save(product);
+        try {
+            product.setVector(aiApiClient.convertToVector(product.getImage()));
+            productRepository.save(product);
+        }catch (Exception e){
+            System.out.println("이미지 벡터화 실패");
+            e.printStackTrace();
+        }
         return product.getId();
     }
 
@@ -44,16 +49,16 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    public List<Long> updateAllProducts(String category, String start, String end){
+    public List<String> updateAllProducts(String category, String start, String end){
         List<Product> productList = ikeaClient.getProductData(category, start, end);
-        List<Long> updatedList = updateByList(productList);
+        List<String> updatedList = updateByList(productList);
         return updatedList;
     }
-    public List<Long> updateByList(List<Product> productList){
-        List<Long> updatedList = new ArrayList<>();
+    public List<String> updateByList(List<Product> productList){
+        List<String> updatedList = new ArrayList<>();
 
         for(Product product: productList){
-            Long externalId = product.getExternalId();
+            String externalId = product.getExternalId();
 
             if(productRepository.findByExternalId(externalId).isEmpty()){
                 addProduct(product);

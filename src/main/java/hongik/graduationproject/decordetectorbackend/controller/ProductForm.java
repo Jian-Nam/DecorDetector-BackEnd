@@ -1,7 +1,7 @@
 package hongik.graduationproject.decordetectorbackend.controller;
 
 public class ProductForm {
-    private Long externalId;
+    private String externalId;
     private String name;
     private String image;
     private String link;
@@ -14,11 +14,11 @@ public class ProductForm {
         this.name = name;
     }
 
-    public Long getExternalId() {
+    public String getExternalId() {
         return externalId;
     }
 
-    public void setExternalId(Long externalId) {
+    public void setExternalId(String externalId) {
         this.externalId = externalId;
     }
 

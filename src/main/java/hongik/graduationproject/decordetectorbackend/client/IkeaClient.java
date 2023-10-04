@@ -18,25 +18,18 @@ public class IkeaClient {
 
     private Product mapProduct(JSONObject jsonObject){
         Product product = new Product();
-        product.setExternalId(Long.parseLong((String) jsonObject.get("id")));
+        product.setExternalId((String)jsonObject.get("id"));
         product.setName(((String) jsonObject.get("name")) + " " + ((String) jsonObject.get("typeName")));
         product.setImage((String) jsonObject.get("mainImageUrl"));
         product.setLink((String) jsonObject.get("pipUrl"));
         return product;
     }
 
-    private Optional<JSONArray> parseIkeaApiResponse(String jsonString){
-        try {
-            JSONParser jsonParser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(jsonString);
-            JSONObject jsonProducts = (JSONObject) jsonObject.get("moreProducts");
-            JSONArray jsonProductWindow = (JSONArray) jsonProducts.get("productWindow");
-            return Optional.ofNullable(jsonProductWindow);
-        }catch(ParseException e){
-            System.out.println("Parsing failed");
-            e.printStackTrace();
-            return Optional.empty();
-        }
+    private JSONArray parseIkeaApiResponse(String jsonString) throws Exception{
+        JSONParser jsonParser = new JSONParser();
+        JSONObject jsonObject = (JSONObject) jsonParser.parse(jsonString);
+        JSONObject jsonProducts = (JSONObject) jsonObject.get("moreProducts");
+        return (JSONArray) jsonProducts.get("productWindow");
     }
 
     public List<Product> getProductData(String category, String start, String end){
@@ -48,16 +41,22 @@ public class IkeaClient {
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);
+        System.out.println("status : " + responseEntity.getStatusCode());
 
         List<Product> result = new ArrayList<>();
-        Optional<JSONArray> ikeaProductList = parseIkeaApiResponse(responseEntity.getBody());
 
-        if(ikeaProductList.isPresent()) {
-            for (Object o : ikeaProductList.get()) {
+        try {
+            JSONArray ikeaProductList = parseIkeaApiResponse(responseEntity.getBody());
+            for (Object o : ikeaProductList) {
                 JSONObject jsonProduct = (JSONObject) o;
                 result.add(mapProduct(jsonProduct));
             }
+        }catch (Exception e){
+            System.out.println("parsing failed");
+            e.printStackTrace();
         }
+
+
 
         return result;
     }

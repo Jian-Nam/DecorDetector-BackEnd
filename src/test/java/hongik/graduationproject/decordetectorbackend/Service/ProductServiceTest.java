@@ -42,7 +42,7 @@ public class ProductServiceTest {
     @Test
     @Commit
     void updateAllProductsTest(){
-        productService.updateAllProducts("fu001", "0", "3");
+        productService.updateAllProducts("fu001", "0", "100");
     }
 
 }

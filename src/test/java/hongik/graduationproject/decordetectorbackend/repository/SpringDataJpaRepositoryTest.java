@@ -25,7 +25,7 @@ public class SpringDataJpaRepositoryTest {
         //given
         Product product = new Product();
         product.setName("123");
-        product.setExternalId(Long.valueOf(112233));
+        product.setExternalId("112233");
         product.setImage("http/blabla/desk.jpg");
         product.setLink("http/blabla/desk");
 
@@ -47,7 +47,7 @@ public class SpringDataJpaRepositoryTest {
         //given
         Product product = new Product();
         product.setName("123");
-        product.setExternalId(Long.valueOf(112233));
+        product.setExternalId("112233");
         product.setImage("http/blabla/desk.jpg");
         product.setLink("http/blabla/desk");
 

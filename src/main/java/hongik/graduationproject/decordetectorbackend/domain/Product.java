@@ -12,7 +12,7 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "external_id")
-    private Long externalId;
+    private String externalId;
     @Column
     private String name;
     @Column
@@ -36,9 +36,9 @@ public class Product {
         this.id = id;
     }
 
-    public Long getExternalId() { return externalId; }
+    public String getExternalId() { return externalId; }
 
-    public void setExternalId(Long externalId) { this.externalId = externalId; }
+    public void setExternalId(String externalId) { this.externalId = externalId; }
 
     public String getName() {
         return name;
