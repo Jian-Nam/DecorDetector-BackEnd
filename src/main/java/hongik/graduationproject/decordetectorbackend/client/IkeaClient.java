@@ -16,6 +16,12 @@ import java.util.Optional;
 
 public class IkeaClient {
 
+    private final RestTemplate restTemplate;
+
+    public IkeaClient(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
+
     private Product mapProduct(JSONObject jsonObject){
         Product product = new Product();
         product.setExternalId((String)jsonObject.get("id"));
@@ -39,7 +45,6 @@ public class IkeaClient {
                 .encode()
                 .toUri();
 
-        RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);
         System.out.println("status : " + responseEntity.getStatusCode());
 

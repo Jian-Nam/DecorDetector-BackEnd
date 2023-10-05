@@ -1,0 +1,16 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://thymeleaf.org">
+
+<body>
+<div class = "container">
+    <form action="/products/similar" method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <input type="text" id="pointX" name="pointX" placeholder="pointX">
+            <input type="text" id="pointY" name="pointY" placeholder="pointY">
+            <input type="file" name="image"/>
+        </div>
+        <button type="submit">등록</button>
+    </form>
+</div>
+</body>
+</html>

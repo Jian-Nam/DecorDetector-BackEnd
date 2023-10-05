@@ -8,7 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.reactive.function.client.WebClientCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.ByteArrayHttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
+
+import java.util.List;
 
 @Configuration
 public class SpringConfig {
@@ -20,9 +25,13 @@ public class SpringConfig {
     }
 
     @Bean
-    public IkeaClient ikeaClient(){ return new IkeaClient(); }
+    public IkeaClient ikeaClient(){
+        return new IkeaClient(restTemplate());
+    }
     @Bean
-    public AiApiClient aiApiClient(){ return new AiApiClient(); }
+    public AiApiClient aiApiClient(){
+        return new AiApiClient(restTemplate());
+    }
     @Bean
     public ProductService productService(){
         return new ProductService(productRepository, ikeaClient(), aiApiClient());
@@ -31,6 +40,12 @@ public class SpringConfig {
     public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
         return new HiddenHttpMethodFilter();
     }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
+
 
 
 

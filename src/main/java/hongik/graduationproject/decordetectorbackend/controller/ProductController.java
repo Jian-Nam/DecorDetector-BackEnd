@@ -1,14 +1,15 @@
 package hongik.graduationproject.decordetectorbackend.controller;
 
 import hongik.graduationproject.decordetectorbackend.domain.Product;
+import hongik.graduationproject.decordetectorbackend.domain.SearchResult;
 import hongik.graduationproject.decordetectorbackend.service.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -21,7 +22,7 @@ public class ProductController {
     }
     @GetMapping("/products/new")
     public String createForm(){
-        return "products/createProductForm";
+        return "products/createForm";
     }
 
     @PostMapping("/products/new")
@@ -46,5 +47,17 @@ public class ProductController {
         List<Product> products = productService.findAllProducts();
         model.addAttribute("products", products);
         return "products/productList";
+    }
+
+    @GetMapping("/products/similar")
+    public String searchForm(){
+        return "products/searchForm";
+    }
+
+    @PostMapping("/products/similar")
+    public String searchProducts(SearchForm form, BindingResult errors){
+        System.out.println("Multipart FormData Binding Result: " + errors);
+        SearchResult searchResult = productService.searchProduct(form);
+        return "redirect:/";
     }
 }

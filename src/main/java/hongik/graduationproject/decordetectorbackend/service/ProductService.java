@@ -3,12 +3,18 @@ package hongik.graduationproject.decordetectorbackend.service;
 
 import hongik.graduationproject.decordetectorbackend.client.AiApiClient;
 import hongik.graduationproject.decordetectorbackend.client.IkeaClient;
+import hongik.graduationproject.decordetectorbackend.controller.SearchForm;
 import hongik.graduationproject.decordetectorbackend.domain.Product;
+import hongik.graduationproject.decordetectorbackend.domain.SearchResult;
 import hongik.graduationproject.decordetectorbackend.repository.ProductRepository;
+import org.springframework.core.io.PathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,7 +34,9 @@ public class ProductService {
 
     public Long addProduct(Product product){
         try {
-            product.setVector(aiApiClient.convertToVector(product.getImage()));
+            URL url = new URL(product.getImage());
+            Resource resource = new UrlResource(url);
+            product.setVector(aiApiClient.convertToVector(resource));
             productRepository.save(product);
         }catch (Exception e){
             System.out.println("이미지 벡터화 실패");
@@ -54,7 +62,7 @@ public class ProductService {
         List<String> updatedList = updateByList(productList);
         return updatedList;
     }
-    public List<String> updateByList(List<Product> productList){
+    private List<String> updateByList(List<Product> productList){
         List<String> updatedList = new ArrayList<>();
 
         for(Product product: productList){
@@ -66,5 +74,21 @@ public class ProductService {
             }
         }
         return updatedList;
+    }
+
+    public SearchResult searchProduct(SearchForm form){
+        SearchResult searchResult = new SearchResult();
+
+        try {
+            Resource resource = new PathResource("/");
+            Resource segmentedImage = aiApiClient.segmentImage(resource);
+            List<Float> vector = aiApiClient.convertToVector(segmentedImage);
+
+        } catch (Exception e){
+
+        }
+
+        Resource resource = new PathResource("/");
+        return searchResult;
     }
 }
