@@ -1,5 +1,6 @@
 package hongik.graduationproject.decordetectorbackend.Service;
 
+import hongik.graduationproject.decordetectorbackend.controller.SearchForm;
 import hongik.graduationproject.decordetectorbackend.domain.Product;
 import hongik.graduationproject.decordetectorbackend.repository.ProductRepository;
 import hongik.graduationproject.decordetectorbackend.service.ProductService;
@@ -42,7 +43,13 @@ public class ProductServiceTest {
     @Test
     @Commit
     void updateAllProductsTest(){
-        productService.updateAllProducts("fu001", "0", "7");
+        productService.updateAllProducts("fu001", "0", "9");
+    }
+
+    @Test
+    void searchProductsTest(){
+        SearchForm searchForm = new SearchForm();
+        productService.searchProduct(searchForm);
     }
 
 }

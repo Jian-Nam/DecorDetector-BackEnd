@@ -3,23 +3,23 @@ package hongik.graduationproject.decordetectorbackend.controller;
 import org.springframework.web.multipart.MultipartFile;
 
 public class SearchForm {
-    private String pointX;
-    private String pointY;
+    private int pointX;
+    private int pointY;
     private MultipartFile image;
 
-    public String getPointX() {
+    public int getPointX() {
         return pointX;
     }
 
-    public void setPointX(String pointX) {
+    public void setPointX(int pointX) {
         this.pointX = pointX;
     }
 
-    public String getPointY() {
+    public int getPointY() {
         return pointY;
     }
 
-    public void setPointY(String pointY) {
+    public void setPointY(int pointY) {
         this.pointY = pointY;
     }
 

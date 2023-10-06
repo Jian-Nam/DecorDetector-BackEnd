@@ -62,13 +62,15 @@ public class AiApiClient {
         return vector;
     }
 
-    public Resource segmentImage(Resource resource) throws Exception{
+    public Resource segmentImage(Resource resource, int pointX, int pointY) throws Exception{
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-
         body.add("image", resource);
+        body.add("pointX", pointX);
+        body.add("pointY", pointY);
+
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
         String serverUrl = "http://127.0.0.1:5000/segment";

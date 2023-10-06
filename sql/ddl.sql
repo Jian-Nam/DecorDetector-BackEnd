@@ -71,10 +71,15 @@ with input_vector as(
     select * from vector WHERE product_id=5
 )
 SELECT
-    A.product_id as pid,
+    A.product_id as id,
+    P.name as name,
+    P.image as image,
+    P.link as link,
     SUM(A.vector_value * B.vector_value) / (SQRT(SUM(A.vector_value * A.vector_value)) * SQRT(SUM(B.vector_value * B.vector_value))) AS cosine_similarity
 FROM vector as A
 JOIN input_vector as B
     on (A.vector_order = B.vector_order)
+JOIN product as P
+    on (A.product_id = P.id)
 group by A.product_id
 order by cosine_similarity desc

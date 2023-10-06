@@ -1,6 +1,7 @@
 package hongik.graduationproject.decordetectorbackend.repository;
 
 import hongik.graduationproject.decordetectorbackend.domain.Product;
+import hongik.graduationproject.decordetectorbackend.domain.SimilarProduct;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,18 @@ public class SpringDataJpaRepositoryTest {
         Product result = repository.findByExternalId(product.getExternalId()).get();
         //then
         assertThat(result).isEqualTo(product);
+    }
+
+    @Test
+    void findBySimilarityTest(){
+        //given
+
+        //when
+        List<SimilarProduct> similarProducts = repository.findBySimilarity();
+        //then
+        for(SimilarProduct sp: similarProducts ){
+            System.out.println(sp.getId() + " " + sp.getName() + " " + sp.getCosineSimilarity());
+        }
     }
 }
 
