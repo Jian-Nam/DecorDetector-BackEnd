@@ -14,24 +14,4 @@ public interface SpringDataJpaProductRepository extends JpaRepository<Product, L
     @Override
     Optional<Product> findByExternalId(String id);
 
-    @Query(
-            value = "with input_vector as(\n" +
-                    "    select * from vector WHERE product_id=5\n" +
-                    ")\n" +
-                    "SELECT\n" +
-                    "    A.product_id as id,\n" +
-                    "    P.name as name,\n" +
-                    "    P.image as image,\n" +
-                    "    P.link as link,\n" +
-                    "    SUM(A.vector_value * B.vector_value) / (SQRT(SUM(A.vector_value * A.vector_value)) * SQRT(SUM(B.vector_value * B.vector_value))) AS cosine_similarity\n" +
-                    "FROM vector as A\n" +
-                    "JOIN input_vector as B\n" +
-                    "    on (A.vector_order = B.vector_order)\n" +
-                    "JOIN product as P\n" +
-                    "    on (A.product_id = P.id)\n" +
-                    "group by A.product_id\n" +
-                    "order by cosine_similarity desc",
-            nativeQuery = true)
-    List<SimilarProduct> findBySimilarity();
-
 }

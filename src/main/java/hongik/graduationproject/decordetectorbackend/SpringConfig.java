@@ -3,7 +3,9 @@ package hongik.graduationproject.decordetectorbackend;
 import hongik.graduationproject.decordetectorbackend.client.AiApiClient;
 import hongik.graduationproject.decordetectorbackend.client.IkeaClient;
 import hongik.graduationproject.decordetectorbackend.repository.ProductRepository;
+import hongik.graduationproject.decordetectorbackend.repository.SearchKeyRepository;
 import hongik.graduationproject.decordetectorbackend.service.ProductService;
+import hongik.graduationproject.decordetectorbackend.service.SearchingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.reactive.function.client.WebClientCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -18,10 +20,13 @@ import java.util.List;
 @Configuration
 public class SpringConfig {
     private final ProductRepository productRepository;
+    private final SearchKeyRepository searchKeyRepository;
 
     @Autowired
-    public SpringConfig(ProductRepository productRepository) {
+    public SpringConfig(ProductRepository productRepository, SearchKeyRepository searchKeyRepository) {
+
         this.productRepository = productRepository;
+        this.searchKeyRepository = searchKeyRepository;
     }
 
     @Bean
@@ -35,6 +40,10 @@ public class SpringConfig {
     @Bean
     public ProductService productService(){
         return new ProductService(productRepository, ikeaClient(), aiApiClient());
+    }
+    @Bean
+    public SearchingService searchingService(){
+        return new SearchingService(searchKeyRepository, aiApiClient());
     }
     @Bean
     public HiddenHttpMethodFilter hiddenHttpMethodFilter() {

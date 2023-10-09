@@ -80,51 +80,6 @@ public class ProductService {
         return updatedList;
     }
 
-    public SearchResult searchProduct(SearchForm form){
-        SearchResult searchResult = new SearchResult();
 
-        //날짜 String 얻기
-        Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        String fileDate = sdf.format(date);
-
-        //업로드 폴더 내 날짜 폴더 생성
-        String rootPath = "D:/NJA/Project/hise_GraduationProject/DecorDetector-BackEnd/decordetector-backend/src/main/resources/static/";
-        String uploadPath = rootPath+ "uploads/" + fileDate;
-        String downloadPath = rootPath+ "downloads/" + fileDate;
-        File uploadDir = new File(uploadPath);
-        File downloadDir = new File(downloadPath);
-
-        if (!uploadDir.exists()) uploadDir.mkdir();
-        if (!downloadDir.exists()) downloadDir.mkdir();
-
-        String randomFileName = UUID.randomUUID().toString();
-        String uploadFilePath =  uploadPath + "/" + randomFileName + ".jpg";
-        String downloadFilePath = downloadPath + "/" + randomFileName +".jpg";
-
-        try {
-            saveBytesToFile(uploadFilePath, form.getImage().getBytes());
-            Resource originalResource = new PathResource(uploadFilePath);
-            Resource segmentedImage = aiApiClient.segmentImage(originalResource, form.getPointX(), form.getPointY());
-
-            saveBytesToFile(downloadFilePath, segmentedImage.getContentAsByteArray());
-            Resource segmentedResource = new PathResource(downloadFilePath);
-            List<Float> vector = aiApiClient.convertToVector(segmentedResource);
-            searchResult.setSegmentedImage(segmentedImage);
-
-
-        } catch (Exception e){
-            System.out.println("이미지 변환 실패");
-        }
-
-
-        return searchResult;
-    }
-    private String saveBytesToFile(String path, byte[] bytes) throws Exception{
-        File file = new File(path);
-        OutputStream outputStream = new FileOutputStream(file);
-        outputStream.write(bytes);
-        return path;
-    }
 
 }

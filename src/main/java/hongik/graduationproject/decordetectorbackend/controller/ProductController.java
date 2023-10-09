@@ -3,22 +3,33 @@ package hongik.graduationproject.decordetectorbackend.controller;
 import hongik.graduationproject.decordetectorbackend.domain.Product;
 import hongik.graduationproject.decordetectorbackend.domain.SearchResult;
 import hongik.graduationproject.decordetectorbackend.service.ProductService;
+import hongik.graduationproject.decordetectorbackend.service.SearchingService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 public class ProductController {
 
     private final ProductService productService;
+    private final SearchingService searchingService;
 
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService, SearchingService searchingService) {
+
         this.productService = productService;
+        this.searchingService = searchingService;
     }
     @GetMapping("/products/new")
     public String createForm(){
@@ -54,10 +65,11 @@ public class ProductController {
         return "products/searchForm";
     }
 
-    @PostMapping("/products/similar")
-    public String searchProducts(SearchForm form, BindingResult errors){
+    @PostMapping(value = "/products/similar", produces = "application/json; charset=UTF8")
+    @ResponseBody
+    public SearchResult searchProducts(SearchForm form, BindingResult errors, Model model){
         System.out.println("Multipart FormData Binding Result: " + errors);
-        SearchResult searchResult = productService.searchProduct(form);
-        return "redirect:/";
+        SearchResult searchResult = searchingService.searchProduct(form);
+        return searchResult;
     }
 }
