@@ -12,14 +12,12 @@ import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
 
+@CrossOrigin(originPatterns = "http://localhost:3000")
 @Controller
 public class ProductController {
 

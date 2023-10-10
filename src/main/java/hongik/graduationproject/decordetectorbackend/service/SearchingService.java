@@ -38,7 +38,7 @@ public class SearchingService {
 
         //업로드 폴더 내 날짜 폴더 생성
         String rootPath = "D:/NJA/Project/hise_GraduationProject/DecorDetector-BackEnd/decordetector-backend/src/main/resources/static/";
-        String responseRootPath = "localhost:8080/";
+        String responseRootPath = "http://localhost:8080/";
         String uploadPath = rootPath+ "uploads/" + fileDate;
         String downloadPath = rootPath+ "downloads/" + fileDate;
         File uploadDir = new File(uploadPath);
@@ -61,7 +61,7 @@ public class SearchingService {
             saveBytesToFile(downloadFilePath, segmentedImage.getContentAsByteArray());
             Resource segmentedResource = new PathResource(downloadFilePath);
 
-            searchResult.setSegmentedImage(responseRootPath + "Images/segmented/" + fileDate +  "/" + randomFileName + ".jpg");
+            searchResult.setSegmentedImage(responseRootPath + "images/segmented/" + fileDate +  "/" + randomFileName + ".jpg");
             List<Float> vector = aiApiClient.convertToVector(segmentedResource);
             searchKey.setVector(vector);
 
