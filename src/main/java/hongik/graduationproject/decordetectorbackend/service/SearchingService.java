@@ -2,10 +2,9 @@ package hongik.graduationproject.decordetectorbackend.service;
 
 import hongik.graduationproject.decordetectorbackend.client.AiApiClient;
 import hongik.graduationproject.decordetectorbackend.controller.SearchForm;
-import hongik.graduationproject.decordetectorbackend.domain.SearchKey;
-import hongik.graduationproject.decordetectorbackend.domain.SearchResult;
-import hongik.graduationproject.decordetectorbackend.domain.SimilarProduct;
-import hongik.graduationproject.decordetectorbackend.repository.SearchKeyRepository;
+import hongik.graduationproject.decordetectorbackend.domain.*;
+import hongik.graduationproject.decordetectorbackend.repository.ProductRepository;
+import hongik.graduationproject.decordetectorbackend.repository.ProductSearchRepository;
 import org.springframework.core.io.PathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,18 +13,18 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Transactional
 public class SearchingService {
-    private final SearchKeyRepository searchKeyRepository;
+    private final ProductRepository productRepository;
+    private final ProductSearchRepository productSearchRepository;
     private final AiApiClient aiApiClient;
 
-    public SearchingService(SearchKeyRepository searchKeyRepository, AiApiClient aiApiClient) {
-        this.searchKeyRepository = searchKeyRepository;
+    public SearchingService( ProductRepository productRepository, ProductSearchRepository productSearchRepository,  AiApiClient aiApiClient) {
+        this.productRepository = productRepository;
         this.aiApiClient = aiApiClient;
+        this.productSearchRepository = productSearchRepository;
     }
 
     public SearchResult searchProduct(SearchForm form){
@@ -53,7 +52,7 @@ public class SearchingService {
         String uploadFilePath =  uploadPath + "/" + randomFileName + ".jpg";
         String downloadFilePath = downloadPath + "/" + randomFileName +".jpg";
 
-        SearchKey searchKey = new SearchKey();
+        List<Float> keyVector = new ArrayList<Float>();
         try {
             saveBytesToFile(uploadFilePath, form.getImage().getBytes());
             Resource originalResource = new PathResource(uploadFilePath);
@@ -63,14 +62,29 @@ public class SearchingService {
 
             searchResult.setSegmentedImage(responseRootPath + "images/segmented/" + fileDate +  "/" + randomFileName + ".jpg");
             List<Float> vector = aiApiClient.convertToVector(segmentedResource);
-            searchKey.setVector(vector);
+            keyVector = vector;
 
         } catch (Exception e){
             System.out.println("이미지 변환 실패");
         }
-        Long searchKeyId = searchKeyRepository.save(searchKey).getId();
-        List<SimilarProduct> similarProducts = searchKeyRepository.findBySimilarity(searchKeyId);
-        searchResult.setSimilarProducts(similarProducts);
+
+        try {
+            List<ProductAndSimilarity> productAndSimilarityList = productSearchRepository.getByImageVector(keyVector);
+            for(ProductAndSimilarity p: productAndSimilarityList){
+                Optional<Product> optionalProduct = productRepository.findById(p.getId());
+                if(optionalProduct.isPresent()){
+                    Product product = optionalProduct.get();
+                    p.setName(product.getName());
+                    p.setImage(product.getImage());
+                    p.setLink(product.getLink());
+                }
+            }
+            searchResult.setSimilarProducts(productAndSimilarityList);
+        }catch(Exception e){
+            System.out.println("ES search 실패");
+            e.printStackTrace();
+        }
+
         //searchKeyRepository.findBySimilarity();
 
 

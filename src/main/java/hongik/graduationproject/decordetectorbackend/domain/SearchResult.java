@@ -6,7 +6,7 @@ import java.util.List;
 
 public class SearchResult {
     private String segmentedImage;
-    private List<SimilarProduct> similarProducts;
+    private List<ProductAndSimilarity> productAndSimilarityList;
 
     public String getSegmentedImage() {
         return segmentedImage;
@@ -16,11 +16,11 @@ public class SearchResult {
         this.segmentedImage = segmentedImage;
     }
 
-    public List<SimilarProduct> getSimilarProducts() {
-        return similarProducts;
+    public List<ProductAndSimilarity> getSimilarProducts() {
+        return productAndSimilarityList;
     }
 
-    public void setSimilarProducts(List<SimilarProduct> similarProducts) {
-        this.similarProducts = similarProducts;
+    public void setSimilarProducts(List<ProductAndSimilarity> productAndSimilarityList) {
+        this.productAndSimilarityList = productAndSimilarityList;
     }
 }

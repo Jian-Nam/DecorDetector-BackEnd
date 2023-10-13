@@ -5,12 +5,16 @@ import hongik.graduationproject.decordetectorbackend.client.AiApiClient;
 import hongik.graduationproject.decordetectorbackend.client.IkeaClient;
 import hongik.graduationproject.decordetectorbackend.controller.SearchForm;
 import hongik.graduationproject.decordetectorbackend.domain.Product;
+import hongik.graduationproject.decordetectorbackend.domain.ProductDocument;
 import hongik.graduationproject.decordetectorbackend.domain.SearchResult;
 import hongik.graduationproject.decordetectorbackend.repository.ProductRepository;
+import hongik.graduationproject.decordetectorbackend.repository.ProductSearchRepository;
+import hongik.graduationproject.decordetectorbackend.repository.SpringDataElasticSearchProductRepository;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.PathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -26,22 +30,32 @@ import java.util.*;
 @Transactional
 public class ProductService {
     private final ProductRepository productRepository;
+    //private final ProductSearchRepository productSearchRepository;
     private final IkeaClient ikeaClient;
     private final AiApiClient aiApiClient;
+    private final ProductSearchRepository productSearchRepository;
 
-    public ProductService(ProductRepository productRepository, IkeaClient ikeaClient, AiApiClient aiApiClient) {
+
+    public ProductService(ProductRepository productRepository, ProductSearchRepository productSearchRepository, IkeaClient ikeaClient, AiApiClient aiApiClient) {
 
         this.productRepository = productRepository;
+        //this.productSearchRepository = productSearchRepository;
         this.ikeaClient = ikeaClient;
         this.aiApiClient = aiApiClient;
+        this.productSearchRepository = productSearchRepository;
     }
 
     public Long addProduct(Product product){
         try {
             URL url = new URL(product.getImage());
             Resource resource = new UrlResource(url);
-            product.setVector(aiApiClient.convertToVector(resource));
-            productRepository.save(product);
+            Product savedProduct = productRepository.save(product);
+
+            ProductDocument productDocument = new ProductDocument();
+            productDocument.setId(savedProduct.getId());
+            productDocument.setImageVector(aiApiClient.convertToVector(resource));
+            ProductDocument savedDocument = productSearchRepository.save(productDocument);
+            System.out.println(savedDocument.getId());
         }catch (Exception e){
             System.out.println("이미지 벡터화 실패");
             e.printStackTrace();

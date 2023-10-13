@@ -1,9 +1,7 @@
 package hongik.graduationproject.decordetectorbackend.repository;
 
 import hongik.graduationproject.decordetectorbackend.domain.Product;
-import hongik.graduationproject.decordetectorbackend.domain.SimilarProduct;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 

@@ -43,13 +43,13 @@ public class ProductServiceTest {
     @Test
     @Commit
     void updateAllProductsTest(){
-        productService.updateAllProducts("fu001", "0", "9");
+        productService.updateAllProducts("fu001", "51", "500");
     }
 
     @Test
     void searchProductsTest(){
         SearchForm searchForm = new SearchForm();
-        productService.searchProduct(searchForm);
+        //productService.searchProduct(searchForm);
     }
 
 }

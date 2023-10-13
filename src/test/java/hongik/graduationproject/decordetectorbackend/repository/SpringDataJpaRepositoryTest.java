@@ -1,7 +1,6 @@
 package hongik.graduationproject.decordetectorbackend.repository;
 
 import hongik.graduationproject.decordetectorbackend.domain.Product;
-import hongik.graduationproject.decordetectorbackend.domain.SimilarProduct;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +34,6 @@ public class SpringDataJpaRepositoryTest {
         vector1.add(8.05F);
         vector1.add(5.29F);
         vector1.add(3.28F);
-        product.setVector( vector1 );
 
         //when
         repository.save(product);
@@ -57,7 +55,6 @@ public class SpringDataJpaRepositoryTest {
         vector1.add(8.05F);
         vector1.add(5.29F);
         vector1.add(3.28F);
-        product.setVector( vector1 );
 
         //when
         repository.save(product);
@@ -71,11 +68,11 @@ public class SpringDataJpaRepositoryTest {
         //given
 
         //when
-        List<SimilarProduct> similarProducts = repository.findBySimilarity();
+        //List<SimilarProduct> similarProducts = repository.findBySimilarity();
         //then
-        for(SimilarProduct sp: similarProducts ){
-            System.out.println(sp.getId() + " " + sp.getName() + " " + sp.getCosineSimilarity());
-        }
+        //for(SimilarProduct sp: similarProducts ){
+            //System.out.println(sp.getId() + " " + sp.getName() + " " + sp.getCosineSimilarity());
+        //}
     }
 }
 

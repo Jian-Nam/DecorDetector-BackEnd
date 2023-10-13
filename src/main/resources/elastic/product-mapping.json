@@ -1,0 +1,10 @@
+{
+  "properties": {
+    "image-vector": {
+      "type": "dense_vector",
+      "dims": 1000,
+      "index": true,
+      "similarity": "cosine"
+    }
+  }
+}

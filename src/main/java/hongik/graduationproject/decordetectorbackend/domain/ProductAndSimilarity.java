@@ -1,24 +1,11 @@
 package hongik.graduationproject.decordetectorbackend.domain;
 
-
-import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
-@Entity
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ProductAndSimilarity {
     private Long id;
-    @Column(name = "external_id")
-    private String externalId;
-    @Column
     private String name;
-    @Column
     private String image;
-    @Column
     private String link;
+    private Float cosineSimilarity;
 
     public Long getId() {
         return id;
@@ -27,10 +14,6 @@ public class Product {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public String getExternalId() { return externalId; }
-
-    public void setExternalId(String externalId) { this.externalId = externalId; }
 
     public String getName() {
         return name;
@@ -54,5 +37,13 @@ public class Product {
 
     public void setLink(String link) {
         this.link = link;
+    }
+
+    public Float getCosineSimilarity() {
+        return cosineSimilarity;
+    }
+
+    public void setCosineSimilarity(Float cosineSimilarity) {
+        this.cosineSimilarity = cosineSimilarity;
     }
 }

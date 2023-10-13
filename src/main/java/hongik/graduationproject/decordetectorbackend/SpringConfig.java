@@ -3,15 +3,15 @@ package hongik.graduationproject.decordetectorbackend;
 import hongik.graduationproject.decordetectorbackend.client.AiApiClient;
 import hongik.graduationproject.decordetectorbackend.client.IkeaClient;
 import hongik.graduationproject.decordetectorbackend.repository.ProductRepository;
-import hongik.graduationproject.decordetectorbackend.repository.SearchKeyRepository;
+import hongik.graduationproject.decordetectorbackend.repository.ProductSearchRepository;
+import hongik.graduationproject.decordetectorbackend.repository.SpringDataElasticSearchProductRepository;
 import hongik.graduationproject.decordetectorbackend.service.ProductService;
 import hongik.graduationproject.decordetectorbackend.service.SearchingService;
+import org.elasticsearch.client.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.web.reactive.function.client.WebClientCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.converter.ByteArrayHttpMessageConverter;
-import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 
@@ -20,15 +20,20 @@ import java.util.List;
 @Configuration
 public class SpringConfig {
     private final ProductRepository productRepository;
-    private final SearchKeyRepository searchKeyRepository;
+    private final ElasticsearchOperations elasticsearchOperations;
+    private final RestClient restClient;
 
     @Autowired
-    public SpringConfig(ProductRepository productRepository, SearchKeyRepository searchKeyRepository) {
-
+    public SpringConfig(ProductRepository productRepository, ElasticsearchOperations elasticsearchOperations, RestClient restClient) {
         this.productRepository = productRepository;
-        this.searchKeyRepository = searchKeyRepository;
+        this.elasticsearchOperations = elasticsearchOperations;
+        this.restClient = restClient;
     }
 
+    @Bean
+    public ProductSearchRepository productSearchRepository(){
+        return new SpringDataElasticSearchProductRepository(elasticsearchOperations, restClient);
+    }
     @Bean
     public IkeaClient ikeaClient(){
         return new IkeaClient(restTemplate());
@@ -39,11 +44,11 @@ public class SpringConfig {
     }
     @Bean
     public ProductService productService(){
-        return new ProductService(productRepository, ikeaClient(), aiApiClient());
+        return new ProductService(productRepository, productSearchRepository(), ikeaClient(), aiApiClient());
     }
     @Bean
     public SearchingService searchingService(){
-        return new SearchingService(searchKeyRepository, aiApiClient());
+        return new SearchingService(productRepository, productSearchRepository(), aiApiClient());
     }
     @Bean
     public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
@@ -54,8 +59,5 @@ public class SpringConfig {
     public RestTemplate restTemplate() {
         return new RestTemplate();
     }
-
-
-
 
 }
