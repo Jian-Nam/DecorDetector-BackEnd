@@ -5,6 +5,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -17,6 +18,8 @@ import java.util.Optional;
 public class IkeaClient {
 
     private final RestTemplate restTemplate;
+    @Value("${externalapi.ikea.url}")
+    private String ikeaApiUrl;
 
     public IkeaClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -40,9 +43,15 @@ public class IkeaClient {
 
     public List<Product> getProductData(String category, String start, String end){
         URI uri = UriComponentsBuilder
-                .fromUriString("https://sik.search.blue.cdtapps.com/kr/ko/product-list-page/more-products?category={category}&start={start}&end={end}&c=lf&v=20220826&sort=RELEVANCE")
-                .buildAndExpand(category, start, end)
+                .fromUriString(ikeaApiUrl)
+                .queryParam("category", "{category}")
+                .queryParam("start", "{start}")
+                .queryParam("end", "{end}")
+                .queryParam("c", "lf")
+                .queryParam("v", "20220826")
+                .queryParam("sort", "RELEVANCE")
                 .encode()
+                .buildAndExpand(category, start, end)
                 .toUri();
 
         ResponseEntity<String> responseEntity = restTemplate.getForEntity(uri, String.class);

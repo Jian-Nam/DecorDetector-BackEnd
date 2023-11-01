@@ -3,6 +3,7 @@ package hongik.graduationproject.decordetectorbackend.client;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -23,6 +24,12 @@ import java.util.List;
 
 public class AiApiClient {
     private final RestTemplate restTemplate;
+    @Value("${externalapi.ai.baseurl}")
+    private String aiApiBaseUrl;
+    @Value("${externalapi.ai.segment.path}")
+    private String aiApiSegmentPath;
+    @Value("${externalapi.ai.vectorize.path}")
+    private String aiApiVectorizePath;
 
     public AiApiClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
@@ -51,7 +58,7 @@ public class AiApiClient {
         body.add("image", resource);
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
-        String serverUrl = "http://127.0.0.1:5000/vectorize";
+        String serverUrl = aiApiBaseUrl+aiApiVectorizePath;
 
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(serverUrl, requestEntity, String.class);
         System.out.println("status : " + responseEntity.getStatusCode());
@@ -73,7 +80,7 @@ public class AiApiClient {
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
-        String serverUrl = "http://127.0.0.1:5000/segment";
+        String serverUrl = aiApiBaseUrl+aiApiSegmentPath;
 
         ResponseEntity<byte[]> responseEntity = restTemplate.postForEntity(serverUrl, requestEntity, byte[].class);
         //Exception
