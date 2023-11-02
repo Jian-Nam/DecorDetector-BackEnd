@@ -15,7 +15,7 @@ public class Product {
     private String externalId;
     @Column
     private String name;
-    @Column
+    @Column(nullable = false)
     private String image;
     @Column
     private String link;
