@@ -9,7 +9,7 @@ public interface ProductRepository {
     Product save(Product product);
     Optional<Product> findById(Long id);
     Optional<Product> findByExternalId(String id);
-    Optional<Product> findByName(String name);
+    Optional<Product> findByProductName(String productName);
     List<Product> findAll();
     void deleteById(Long id);
 }

@@ -28,13 +28,13 @@ public class ProductServiceTest {
     void addProductTest(){
         //given
         Product product = new Product();
-        product.setName("qqq");
+        product.setProductName("qqq");
         product.setImage("https://www.ikea.com/kr/ko/images/products/hattasen-bedside-table-shelf-unit-light-beige__1188929_pe899630_s5.jpg");
         product.setLink("http/blabla/desk");
 
         //when
         productService.addProduct(product);
-        Product result = productRepository.findByName(product.getName()).get();
+        Product result = productRepository.findByProductName(product.getProductName()).get();
 
         //then
         assertThat(product).isEqualTo(result);

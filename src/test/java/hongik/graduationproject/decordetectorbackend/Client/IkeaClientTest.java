@@ -18,7 +18,7 @@ public class IkeaClientTest {
     void getDataTest(){
         List<Product> res = ikeaClient.getProductData("fu001", "0", "3");
         for(Product p: res){
-            System.out.println(p.getName());
+            System.out.println(p.getProductName());
         }
     }
 }

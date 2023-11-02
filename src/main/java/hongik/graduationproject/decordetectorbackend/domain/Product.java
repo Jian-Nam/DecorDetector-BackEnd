@@ -13,8 +13,8 @@ public class Product {
     private Long id;
     @Column(name = "external_id")
     private String externalId;
-    @Column
-    private String name;
+    @Column(name="product_name")
+    private String productName;
     @Column(nullable = false)
     private String image;
     @Column
@@ -32,12 +32,12 @@ public class Product {
 
     public void setExternalId(String externalId) { this.externalId = externalId; }
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
     public String getImage() {

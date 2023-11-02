@@ -38,7 +38,7 @@ public class ProductController {
     public String createProduct(ProductForm productForm){
         Product product = new Product();
         product.setExternalId(productForm.getExternalId());
-        product.setName(productForm.getName());
+        product.setProductName(productForm.getName());
         product.setImage(productForm.getImage());
         product.setLink(productForm.getLink());
         productService.addProduct(product);

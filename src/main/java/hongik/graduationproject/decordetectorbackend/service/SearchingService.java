@@ -105,7 +105,7 @@ public class SearchingService {
                 Optional<Product> optionalProduct = productRepository.findById(p.getId());
                 if(optionalProduct.isPresent()){
                     Product product = optionalProduct.get();
-                    p.setName(product.getName());
+                    p.setName(product.getProductName());
                     p.setImage(product.getImage());
                     p.setLink(product.getLink());
                 }

@@ -28,7 +28,7 @@ public class IkeaClient {
     private Product mapProduct(JSONObject jsonObject){
         Product product = new Product();
         product.setExternalId((String)jsonObject.get("id"));
-        product.setName(((String) jsonObject.get("name")) + " " + ((String) jsonObject.get("typeName")));
+        product.setProductName(((String) jsonObject.get("name")) + " " + ((String) jsonObject.get("typeName")));
         product.setImage((String) jsonObject.get("mainImageUrl"));
         product.setLink((String) jsonObject.get("pipUrl"));
         return product;
