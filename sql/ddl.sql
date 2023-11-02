@@ -1,3 +1,6 @@
+SHOW DATABASES
+CREATE DATABASE `product_db` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
+USE product_db
 drop table if exists product CASCADE;
 create table product
 (
@@ -5,6 +8,16 @@ create table product
     external_id varchar(255),
     name varchar(255),
     image varchar(255),
+    link varchar(255),
+    primary key (id)
+);
+
+create table product
+(
+    id bigint NOT NULL AUTO_INCREMENT,
+    external_id varchar(255),
+    name varchar(255),
+    image varchar(255) NOT NULL,
     link varchar(255),
     primary key (id)
 );

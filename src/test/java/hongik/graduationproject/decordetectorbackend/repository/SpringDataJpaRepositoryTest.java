@@ -29,12 +29,6 @@ public class SpringDataJpaRepositoryTest {
         product.setImage("http/blabla/desk.jpg");
         product.setLink("http/blabla/desk");
 
-        List<Float> vector1 = new ArrayList<Float>();
-        vector1.add(3.14F);
-        vector1.add(8.05F);
-        vector1.add(5.29F);
-        vector1.add(3.28F);
-
         //when
         repository.save(product);
         Product result = repository.findByName(product.getName()).get();
@@ -49,12 +43,6 @@ public class SpringDataJpaRepositoryTest {
         product.setExternalId("112233");
         product.setImage("http/blabla/desk.jpg");
         product.setLink("http/blabla/desk");
-
-        List<Float> vector1 = new ArrayList<Float>();
-        vector1.add(3.14F);
-        vector1.add(8.05F);
-        vector1.add(5.29F);
-        vector1.add(3.28F);
 
         //when
         repository.save(product);
