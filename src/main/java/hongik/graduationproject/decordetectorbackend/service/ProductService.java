@@ -57,7 +57,7 @@ public class ProductService {
             ProductDocument savedDocument = productSearchRepository.save(productDocument);
             System.out.println(savedDocument.getId());
         }catch (Exception e){
-            System.out.println("이미지 벡터화 실패");
+            System.out.println("이미지 벡터화 OR Elasticsearch 연결 실패");
             e.printStackTrace();
         }
         return product.getId();

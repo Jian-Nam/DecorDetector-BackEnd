@@ -1,4 +1,4 @@
-SHOW DATABASES
+SHOW DATABASES;
 CREATE DATABASE `product_db` DEFAULT CHARACTER SET utf8 COLLATE utf8_bin;
 USE product_db
 drop table if exists product CASCADE;
