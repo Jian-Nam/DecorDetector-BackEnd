@@ -1,24 +1,20 @@
 package hongik.graduationproject.decordetectorbackend.client;
 
+import hongik.graduationproject.decordetectorbackend.exception.ExternalApiBadConnectionException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.FileSystemResource;
+
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+
+import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,14 +38,14 @@ public class AiApiClient {
         }
         return listFloat;
     }
-    private List<Float> parseVectorizationResponse(ResponseEntity<String> responseEntity) throws Exception{
+    private List<Float> parseVectorizationResponse(ResponseEntity<String> responseEntity) throws ParseException, ExternalApiBadConnectionException {
         JSONParser jsonParser = new JSONParser();
         //Exception
         JSONObject jsonResponseBody = (JSONObject) jsonParser.parse(responseEntity.getBody());
         JSONArray jsonVector = (JSONArray) jsonResponseBody.get("vectors");
         return jsonArrayToListFloat(jsonVector);
     }
-    public List<Float> convertToVector(Resource resource) throws Exception {
+    public List<Float> convertToVector(Resource resource) throws ParseException {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -61,15 +57,15 @@ public class AiApiClient {
         String serverUrl = aiApiBaseUrl+aiApiVectorizePath;
 
         ResponseEntity<String> responseEntity = restTemplate.postForEntity(serverUrl, requestEntity, String.class);
-        System.out.println("status : " + responseEntity.getStatusCode());
 
-        //Exception
-        List<Float> vector = parseVectorizationResponse(responseEntity);
+        if(!responseEntity.getStatusCode().is2xxSuccessful()){
+            throw new ExternalApiBadConnectionException("Ai서버 /vectorize api 연결 실패");
+        }
 
-        return vector;
+        return parseVectorizationResponse(responseEntity);
     }
 
-    public Resource segmentImage(Resource resource, int pointX, int pointY) throws Exception{
+    public Resource segmentImage(Resource resource, int pointX, int pointY){
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -80,11 +76,14 @@ public class AiApiClient {
 
         HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
-        String serverUrl = aiApiBaseUrl+aiApiSegmentPath;
+        String serverUrl = aiApiBaseUrl + aiApiSegmentPath;
 
         ResponseEntity<byte[]> responseEntity = restTemplate.postForEntity(serverUrl, requestEntity, byte[].class);
-        //Exception
-        Resource responseResource = new ByteArrayResource(responseEntity.getBody());
-        return responseResource;
+
+        if(!responseEntity.getStatusCode().is2xxSuccessful()){
+            throw new ExternalApiBadConnectionException("Ai서버 /segment api 연결 실패");
+        }
+
+        return new ByteArrayResource(responseEntity.getBody());
     }
 }

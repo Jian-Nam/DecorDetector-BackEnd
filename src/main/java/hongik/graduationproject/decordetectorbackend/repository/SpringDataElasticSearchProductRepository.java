@@ -18,6 +18,7 @@ import org.json.simple.parser.JSONParser;
 
 import org.json.simple.parser.ParseException;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 
 
 import java.io.IOException;
@@ -37,6 +38,17 @@ public class SpringDataElasticSearchProductRepository implements ProductSearchRe
     public ProductDocument save(ProductDocument productDocument){
         return elasticsearchOperations.save(productDocument);
     }
+
+    public void delete(Long id){
+        elasticsearchOperations.delete(id.toString(), ProductDocument.class);
+    }
+
+    public Optional<ProductDocument> findById(Long id){
+        ProductDocument result = elasticsearchOperations.get(id.toString(), ProductDocument.class);
+        return Optional.ofNullable(result);
+    }
+
+
     public List<ProductAndSimilarity> getByImageVector(List<Float> imageVector) throws JsonProcessingException, IOException, ParseException {
         String endpoint = "/product/_search";
 
@@ -77,8 +89,6 @@ public class SpringDataElasticSearchProductRepository implements ProductSearchRe
             ProductAndSimilarity productAndSimilarity = mapSearchResult(jsonHit);
             result.add(productAndSimilarity);
         }
-
-
         return result;
     }
 

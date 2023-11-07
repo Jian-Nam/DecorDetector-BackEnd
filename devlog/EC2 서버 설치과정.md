@@ -209,3 +209,18 @@ mysql 접속
 ```
 mysql -u root -p
 ```
+## Spring Backend 배포
+```
+git clone 깃허브 주소
+cd 폴더 디렉토리
+chmod +x gradlew
+./gradlew build
+cd build/libs
+nohup java -jar api-0.0.1-SNAPSHOT.jar &
+```
+```
+jobs
+fg %인덱스
+control + c
+```
+nohup java -jar api-0.0.1-SNAPSHOT.jar &

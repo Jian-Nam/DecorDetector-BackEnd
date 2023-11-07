@@ -1,17 +1,17 @@
-package hongik.graduationproject.decordetectorbackend.controller;
+package hongik.graduationproject.decordetectorbackend.form;
 
 public class ProductForm {
     private String externalId;
-    private String name;
+    private String productName;
     private String image;
     private String link;
 
-    public String getName() {
-        return name;
+    public String getProductName() {
+        return productName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setProductName(String name) {
+        this.productName = name;
     }
 
     public String getExternalId() {

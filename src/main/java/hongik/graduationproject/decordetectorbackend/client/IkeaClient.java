@@ -34,7 +34,7 @@ public class IkeaClient {
         return product;
     }
 
-    private JSONArray parseIkeaApiResponse(String jsonString) throws Exception{
+    private JSONArray parseIkeaApiResponse(String jsonString) throws ParseException{
         JSONParser jsonParser = new JSONParser();
         JSONObject jsonObject = (JSONObject) jsonParser.parse(jsonString);
         JSONObject jsonProducts = (JSONObject) jsonObject.get("moreProducts");
@@ -69,8 +69,6 @@ public class IkeaClient {
             System.out.println("parsing failed");
             e.printStackTrace();
         }
-
-
 
         return result;
     }

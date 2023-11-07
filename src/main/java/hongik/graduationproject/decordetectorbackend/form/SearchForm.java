@@ -1,4 +1,4 @@
-package hongik.graduationproject.decordetectorbackend.controller;
+package hongik.graduationproject.decordetectorbackend.form;
 
 import org.springframework.web.multipart.MultipartFile;
 

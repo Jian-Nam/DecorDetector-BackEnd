@@ -1,7 +1,7 @@
 package hongik.graduationproject.decordetectorbackend.service;
 
 import hongik.graduationproject.decordetectorbackend.client.AiApiClient;
-import hongik.graduationproject.decordetectorbackend.controller.SearchForm;
+import hongik.graduationproject.decordetectorbackend.form.SearchForm;
 import hongik.graduationproject.decordetectorbackend.domain.*;
 import hongik.graduationproject.decordetectorbackend.repository.ProductRepository;
 import hongik.graduationproject.decordetectorbackend.repository.ProductSearchRepository;
@@ -90,7 +90,7 @@ public class SearchingService {
             saveBytesToFile(downloadFilePath, segmentedImage.getContentAsByteArray());
             Resource segmentedResource = new PathResource(downloadFilePath);
 
-            searchResult.setSegmentedImage(myRootAddress + "images/segmented/" + fileDate +  "/" + randomFileName + ".jpg");
+            searchResult.setSegmentedImage(myRootAddress + "/images/segmented/" + fileDate +  "/" + randomFileName + ".jpg");
             List<Float> vector = aiApiClient.convertToVector(segmentedResource);
             keyVector = vector;
 
