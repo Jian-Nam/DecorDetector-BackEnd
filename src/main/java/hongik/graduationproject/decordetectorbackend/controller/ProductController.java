@@ -18,7 +18,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(originPatterns = "http://localhost:3000")
+
 @RestController
 public class ProductController {
 

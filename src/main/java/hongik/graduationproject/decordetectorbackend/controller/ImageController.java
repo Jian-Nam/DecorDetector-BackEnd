@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.MalformedURLException;
 
-@CrossOrigin(originPatterns = "http://localhost:3000")
+
 @RestController
 public class ImageController {
     @Value("${sourceimage.root}")
