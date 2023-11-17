@@ -59,6 +59,18 @@ public class ProductService {
         productRepository.deleteById(id);
         productSearchRepository.delete(id);
     }
+    public List<Long> cleanIfDataNotExist(Long maxIndex){
+        List<Long> cleanedId = new ArrayList<>();
+        for(long i= 0L; i<maxIndex; i++){
+            if(productRepository.findById(i).isEmpty()) {
+                if(productRepository.findById(i).isPresent()) {
+                    productSearchRepository.delete(i);
+                    cleanedId.add(i);
+                }
+            }
+        }
+        return cleanedId;
+    }
 
     public List<String> updateAllProducts(String category, String start, String end)throws MalformedURLException, ParseException, ExternalApiBadConnectionException{
         List<Product> productList = ikeaClient.getProductData(category, start, end);

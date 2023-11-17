@@ -97,4 +97,9 @@ public class ProductController {
         SearchResult searchResult = searchingService.searchProduct(form);
         return searchResult;
     }
+
+    @PostMapping("/products/clean")
+    public List<Long> cleanSearchEngine(@RequestParam Long maxIndex){
+        return productService.cleanIfDataNotExist(maxIndex);
+    }
 }
