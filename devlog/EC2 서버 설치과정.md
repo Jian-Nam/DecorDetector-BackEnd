@@ -223,4 +223,16 @@ jobs
 fg %인덱스
 control + c
 ```
-nohup java -jar api-0.0.1-SNAPSHOT.jar &
+nohup java -jar decordetector-backend-0.0.1-SNAPSHOT.jar &
+
+**port is already used**
+```
+sudo netstat -ltupn
+-l 옵션 : netstat에 모든 수신 소켓을 표시한다.
+-t 옵션 : 모든 TCP 연결을 표시한다.
+-u 옵션 : 모든 UDP 연결을 표시한다.
+-p 옵션 : 포트에서 수신하는 어플리케이션/데몬의 이름을 표시한다.
+-n 옵션 : 서비스 이름 대신 port 번호를 표시한다.
+
+kill -9 PID
+```
