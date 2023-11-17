@@ -63,7 +63,7 @@ public class ProductService {
         List<Long> cleanedId = new ArrayList<>();
         for(long i= 0L; i<maxIndex; i++){
             if(productRepository.findById(i).isEmpty()) {
-                if(productRepository.findById(i).isPresent()) {
+                if(productSearchRepository.findById(i).isPresent()) {
                     productSearchRepository.delete(i);
                     cleanedId.add(i);
                 }
